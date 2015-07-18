@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "Diigo Ext",
+  "description": "Add extra to diigo",
+  "version": "1.0",
+
+  "content_scripts": [
+      {
+        "matches": ["https://www.diigo.com/tools"],
+        "css": ["diigoext.css"],
+        "js": ["bower_components/DOMBuilder/dist/DOMBuilder.dom.min.js", "bower_components/DOMBuilder/dist/DOMBuilder.dom.min.js", "diigoext.js"]
+      }
+    ],
+
+  "permissions": [
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}

@@ -1,0 +1,30 @@
+.diigoext a:hover {
+  text-decoration: underline;
+}
+.diigoext a { 
+ cursor: pointer; 
+}
+
+.diigo-btn {
+  width: 130px;
+    height: 30px;
+    background: #65a2f8;
+    background: -webkit-linear-gradient(top,#7eb8fe,#4787f1);
+    background: -moz-linear-gradient(top,#7eb8fe,#4787f1);
+    background: -ms-linear-gradient(top,#7eb8fe,#4787f1);
+    float: left;
+    line-height: 30px;
+    color: #fff;
+    font-weight: 200;
+    border: 1px solid;
+    border-color: #61a0f1 #4e89db #396fc2;
+    border-radius: 3px;
+}
+
+.diigo-btn:hover {
+  background: #5b91db;
+  background: -webkit-linear-gradient(top,#689cde,#3e76d4);
+  background: -moz-linear-gradient(top,#689cde,#3e76d4);
+  background: -ms-linear-gradient(top,#689cde,#3e76d4);
+  text-decoration: none;
+}
