@@ -2,6 +2,7 @@
   "manifest_version": 2,
   "name": "Diigo Ext",
   "description": "Add extra to diigo",
+  "author": "ridermansb",
   "version": "1.0",
 
   "content_scripts": [
@@ -12,8 +13,14 @@
       }
     ],
 
+ "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  },
+
   "permissions": [
     "activeTab",
+    "storage",
     "https://ajax.googleapis.com/"
   ]
 }
