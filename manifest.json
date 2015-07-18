@@ -21,6 +21,7 @@
   "permissions": [
     "activeTab",
     "storage",
-    "https://ajax.googleapis.com/"
+    "https://ajax.googleapis.com/",
+    "bookmarks", "https://secure.diigo.com/api/v2/"
   ]
 }

@@ -16,7 +16,6 @@ function save_options() {
 }
 
 function restore_options() {
-  // Use default value color = 'red' and likesColor = true.
   chrome.storage.local.get({
     username: '',
     password: ''
