@@ -2,6 +2,9 @@ var diigoApiUri = "https://secure.diigo.com/api/v2";
 var key = "cabf58a5f4eaf351";
 var userData = {};
 
+var merge_links, merge_link_msg;
+    //document.getElementById('diigoExt_merge_links');
+
 chrome.storage.local.get({
     username: '',
     password: ''
@@ -9,15 +12,20 @@ chrome.storage.local.get({
     userData = items;
 
     var el = DOMBuilder.elements;
+
+    // Store default elements
+    merge_links = el.A({'id': 'diigoExt_merge_links', click: startMergeLinks}, 'Remove/Merge Duplicate Links');
+    merge_link_msg = el.SPAN({'id': 'diigoExt_merge_link_msg', 'class': 'toolRecommonded hidden'}, 'message');
+
+    // Add UI
     var diigoExtElements = el.DIV({'class': 'toolSection diigoext'}, [
         el.H2('Diigo Ext'),
         el.DIV([
             el.UL([
                 el.LI([
-                    el.SPAN({'class': 'toolName'}, [
-                        el.A({click: mergeLinks}, 'Remove/Merge Duplicate Links')
-                    ]),
-                    ' Remove duplicate links and merge tags'
+                    el.SPAN({'class': 'toolName'}, [ merge_links ]),
+                    ' Remove duplicate links and merge tags.',
+                    merge_link_msg
                 ])
             ])
         ])
@@ -27,18 +35,39 @@ chrome.storage.local.get({
     main.insertBefore(diigoExtElements, main.firstChild);
 });
 
-var mergeLinks = function() {
-    // Access api
-    getBookmarks('count=10&filter=all', function (response) {
-        console.log(response);
-    }, function (errStatus) {
-        console.log(errStatus);
+function getAllBookmarks(startArray, startLink, callbackSuccess, callbackError) {
+    getBookmarks('count=100&filter=all&sort=0&start=' + startLink, function (bookmarks) {
+        if (bookmarks.length > 0) {
+            startLink += 100;
+            startArray = startArray.concat(bookmarks);
+            merge_link_msg.innerText = startArray.length + " bookmarks loaded ..."
+            getAllBookmarks(startArray, startLink, callbackSuccess, callbackError);
+        } else {
+            callbackSuccess(startArray);
+        }
+    }, function (err) {
+        callbackError(err);
     });
+}
+var startMergeLinks = function() {
+    // Update same feedback
+    merge_links.classList.add('disabled');
+    merge_link_msg.classList.remove('hidden');
+    merge_link_msg.innerText = "Get links ..."
 
-    // merge links
+    getAllBookmarks([], 0, mergeLinks, function(err) {
+        merge_links.classList.remove('disabled');
+        merge_link_msg.innerText = "Erro ocorred!";
+    });
+};
+
+var mergeLinks = function(bookmarks) {
+    merge_link_msg.innerText = "Merge links..."
 
 
-    // Givin same feedback
+    console.log(bookmarks.length);
+    //merge_links.classList.remove('disabled');
+    //merge_link_msg.classList.add('hidden');
 };
 
 var getBookmarks = function (filter, callbackSuccess, callbackError) {
@@ -55,8 +84,7 @@ var getBookmarks = function (filter, callbackSuccess, callbackError) {
         }
 
         if (xhr.status == 200) {
-            var resp = JSON.parse(xhr.responseText);
-            callbackSuccess(resp);
+            callbackSuccess(JSON.parse(xhr.responseText));
         } else {
             callbackError(xhr.readyState);
         }
